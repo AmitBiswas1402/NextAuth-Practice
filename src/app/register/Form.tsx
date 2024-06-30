@@ -25,7 +25,8 @@ const formSchema = z.object({
   .max(20, {
     message: "Password should not be more that 20 charecters"
   }),
-  password: z.string()
+  password: z
+  .string()
   .min(6, {message: "Password should be at least 6 charecters long"})
 })
 
@@ -49,10 +50,26 @@ const RegisterForm = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type='email' placeholder="shadcn" {...field} />
+                <Input type='email' placeholder="your@email.com" {...field} />
               </FormControl>
               <FormDescription>
                 This is your email used to sign in.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input type='password' placeholder="123456" {...field} />
+              </FormControl>
+              <FormDescription>
+                This is your password used to sign in.
               </FormDescription>
               <FormMessage />
             </FormItem>
