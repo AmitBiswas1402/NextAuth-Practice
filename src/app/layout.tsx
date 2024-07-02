@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SessionWrapper from "../../components/SessionWrapper";
 import { ThemeProvider } from "../../components/theme-provider";
+import { ClerkProvider, SignIn, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,19 +18,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SessionWrapper>
-      <html lang="en">
-        <body className={inter.className}>
-        <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
-        </body>
-      </html>
-    </SessionWrapper>
+    <ClerkProvider>
+      <SessionWrapper>
+        <html lang="en">
+          <body className={inter.className}>
+            <header className="flex justify-between">
+              <UserButton showName />
+            </header>
+          <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+              >
+                <SignedOut>
+                  <SignIn routing="hash" />
+                </SignedOut>
+                <SignedIn>
+                  {children}
+                </SignedIn>
+            </ThemeProvider>
+          </body>
+        </html>
+      </SessionWrapper>
+    </ClerkProvider>
   );
 }
